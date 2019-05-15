@@ -1,0 +1,533 @@
+<html>
+    <head>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet">
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+     <link rel="stylesheet" href="/style.css">
+
+    </head>
+    <body>
+    <div class="container">
+    <h3 class=" text-center">Messaging</h3>
+    <div class="messaging">
+          <div class="inbox_msg">
+            <div class="inbox_people">
+              <div class="headind_srch">
+                <div class="recent_heading">
+                  <h4 class="mesajlar">Mesajlar</h4>
+                </div>
+                <div class="recent_heading">
+                <h4 class="kisisler ">Kişiler</h4>
+                </div>
+                <div class="srch_bar">
+                  <div class="stylish-input-group">
+                    <input type="text" class="search-bar"  placeholder="Search" >
+                    <span class="input-group-addon">
+                    <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
+                    </span> </div>
+                </div>
+              </div>
+
+              <dir id="ibmesajlar">
+
+                  <div   class="inbox_chat ">
+                  
+                      <p style="display: none" class="mad"><%- muser[0].username %></p>
+                      <p style="display: none"  class="mid"><%- muser[0].user_id %></p>
+      
+                        <% if (conversationusers) { %>
+                      
+                              <% conversationusers.forEach(function(user,i) { 
+                                %>
+                             
+                                <div class="chat_list"
+                                 data-id="<%= user.user_id %>"
+                                 data-cid="<%= user.c_id %>"
+                                  
+                                  data-url="http://127.0.0.1:3000/getConversationMessaga?c_id=<%= user.c_id %>&ofset=0">
+                                    <div class="chat_people" >
+                                      <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                                      <div class="chat_ib">
+                                        <h5 data-to="<%= user.user_id %>"> <%= user.username %>  <span class="ofline"></span>
+                                          <span class="chat_date">Dec 25</span> </h5>
+                                        <% if (conversationLastMessage[i][0]) { %>
+                                        <p> <%- conversationLastMessage[i][0].reply %></p>
+                                        <% } %>
+                                      </div>
+                                    </div>
+                                  </div>
+      
+                              <% }); %>
+                           <% }else{ %>
+                            Data yok
+                            <% }%>
+      
+                  
+                     
+      
+                     
+                     
+                      
+                    </div>
+
+              </dir>
+
+              <dir id="ibkisiler">
+                  <div  class="inbox_chat" >
+                  
+               
+
+                      <% if (allUser) { %>
+                    
+                            <% allUser.forEach(function(user,i) { 
+                              %>
+                           
+                              <div class="chat_list2"
+                          >
+                                  <div class="chat_people" >
+                                    <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                                    <div class="chat_ib">
+                                      <h5 data-to="<%= user.user_id %>"> <%= user.username %> 
+                                        <span class="chat_date">
+                                          <button class="btnAddConversation"
+                                          data-url="http://127.0.0.1:3000/addConversationUsers"
+                                          data-muser="<%= masterUser %>"
+                                          data-id="<%= user.user_id %>"
+                                          >Ekle</button></span> </h5>
+                                            
+                                    </div>
+                                  </div>
+    
+                                  
+                                </div>
+    
+                            <% }); %>
+                         <% }else{ %>
+                          Data yok
+                          <% }%>
+    
+                    
+                  </div>
+
+              </dir>
+
+            
+
+              
+            </div>
+            <div class="mesgs">
+              <div class="msg_history">
+               
+                
+                
+              </div>
+              <div class="type_msg">
+                <div class="input_msg_write">
+                  <input type="text" class="write_msg" placeholder="Type a message" />
+                  <button class="msg_send_btn"
+                  data-url="http://127.0.0.1:3000/sendMessage"
+                   data-muser="<%= masterUser %>" type="button">
+                   <i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
+          <p class="text-center top_spac"> Design by <a target="_blank" href="#">Sunil Rajput</a></p>
+          
+        </div></div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script  >
+          $(document).ready(function(){
+
+
+
+
+            $(".btnAddConversation").click(function(){
+
+            var id=  $(this).data("id");
+            var mid=  $(this).data("muser");
+            var url=  $(this).data("url");
+
+            
+            $.ajax({
+                  type: 'POST',
+                  url: url,
+                  data: {"user_one":id,"user_two":mid},
+                  async: false,
+                  beforeSend: function (xhr) {
+                  if (xhr && xhr.overrideMimeType) {
+                   xhr.overrideMimeType('application/json;charset=utf-8');
+                      }
+                  },
+                 dataType: 'json',
+                success: function( data, textStatus, jQxhr ){
+
+        alert("ekleme işlemi başarılı oldu") ; 
+
+     },
+    error: function( jqXhr, textStatus, errorThrown ){
+      alert("kişi daha önce eklenmiş") ; 
+    }
+});
+
+
+            })
+
+
+$(".kisisler").click(function(){
+$("#ibmesajlar").css({"display":"none"});
+$("#ibkisiler").css({"display":"inline"});
+
+$(".mesgs").hide();
+
+
+
+
+});
+
+    
+$(".mesajlar").click(function(){
+$("#ibkisiler").css({"display":"none"});
+$("#ibmesajlar").css({"display":"inline"});
+$(".mesgs").show();
+location.reload();
+
+
+
+
+
+
+});
+
+
+            var $mad= $(".mad").text();
+            var $mid= $(".mid").text();
+
+
+			var socket = io.connect('http://localhost:3000');
+      socket.on('connect', function(){
+				// call the server-side function 'adduser' and send one parameter (value of prompt)
+				//socket.emit('adduser', prompt("What's your name?"));
+				socket.emit('adduser',$mid);
+			});
+
+    
+	
+		
+			// listener, whenever the server emits 'updatechat', this updates the chat body
+			socket.on('updatechat', function (username, data) {
+
+          var htm2="";
+          if(data.userId==$mid){
+                htm2='<div class="outgoing_msg"> <div class="sent_msg"><strong>'+data.mad+'</strong><p>'+data.message+'</p><span class="time_date"> 11:01 AM    |    June 9</span> </div></div>';
+                  }else{
+                    htm2='<div class="incoming_msg"><div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div><div class="received_msg"><div class="received_withd_msg"><strong>'+data.mad+'</strong><p>'+data.message+'</p><span class="time_date"> 11:01 AM    |    Today</span></div></div></div>'
+                  }
+
+           $(".msg_history").append(htm2);
+
+            $('.msg_history').animate({scrollTop: $('.msg_history').prop("scrollHeight")},300);
+
+			});
+		
+    
+      
+      socket.on('updateusers', function(data) {
+       
+        $( ".chat_list" ).each(function( i ) {
+          
+          var att= $(this).find(".chat_ib");
+
+               var of=att.find('h5').find(".online");
+                of.removeClass("online");
+                of.addClass("ofline");
+        })
+
+				$.each(data, function(index, value ) {
+
+          $( ".chat_list" ).each(function( i ) {
+							   
+            var term = $(this).attr('data-id');
+            if(term==value){
+
+              var att= $(this).find(".chat_ib");
+
+                var of=att.find('h5').find(".ofline");
+                of.removeClass("ofline");
+                of.addClass('online');
+
+           //$(this).css("background-color", "#50D866");
+}
+
+       })
+         
+});
+			});
+		
+
+
+
+		socket.on('onlinepeople', function (data) {
+     
+      $( ".chat_list" ).each(function( i ) {
+							   
+                 var term = $(this).attr('data-id');
+
+                  //alert(typeof term);
+     
+                      
+
+                 if(term==data.socketUser){
+
+                  if(data.online==true){
+                    $(this).css("background-color", "#50D866");
+
+                  }else{
+                    $(this).css("background-color", "#ffffff");
+
+                  }
+     
+
+     
+                 }
+     
+                    });
+        
+
+			});
+    
+      
+      
+          
+		
+			// listener, whenever the server emits 'updateusers', this updates the username list
+			socket.on('updateusers', function(data) {
+			
+      });
+
+
+      $(".msg_history").on("click",".load-more-btn",function(){
+        var dataUrl;
+        var user_id;
+        var hh;
+
+
+        $(".load-more-btn").remove();
+
+           $( ".chat_list" ).each(function( i ) {
+
+
+							   
+                 var term = $(this).attr('data');
+     
+                 if(term=="checked"){
+
+                 var ofset=20+parseInt($(this).data("ofset"));
+                 $(this).data("ofset",ofset)
+                  var c_id=$(this).data("cid");
+
+                  hh="http://127.0.0.1:3000/getConversationMessaga?c_id="+c_id+"&ofset="+ofset;
+
+                 alert(hh);
+
+
+                  user_id = $(this).data("id");
+
+     
+                 }
+     
+                    });
+
+
+
+
+
+
+          $.get(hh, function( data ) {
+
+            data.reverse();
+
+
+ data.forEach(function(item,i){
+
+  
+   var htm2="";
+   if(item.user_id!=user_id){
+ htm2='<div class="outgoing_msg"> <div class="sent_msg"><strong>'+item.username+'</strong><p>'+item.reply+'</p><span class="time_date"> 11:01 AM    |    June 9</span> </div></div>';
+   }else{
+     htm2='<div class="incoming_msg"><div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div><div class="received_msg"><div class="received_withd_msg"><strong>'+item.username+'</strong><p>'+item.reply+'</p><span class="time_date"> 11:01 AM    |    Today</span></div></div></div>'
+   }
+
+$(".msg_history").prepend(htm2);
+
+if(i==data.length-1){
+    $(".msg_history").prepend('<div class="load-more-btn">Daha Fazla Yükle</div>');
+
+  }
+
+
+ });
+
+
+});
+      })
+      
+   
+
+            $(".chat_list").click(function(e){
+
+            var $data_url = $(this).data("url");
+            var $user_id = $(this).data("id");
+            var $c_id = $(this).data("cid");
+
+              $(this).data("ofset",0);
+
+              $( ".chat_list" ).each(function( i ) {
+							$(this).css("background-color", "#EBEBEB");
+   
+							$(this).removeAttr("data");
+
+
+                });
+
+                $(this).attr("data", "checked");
+						$(this).css("background-color", "#ffffff");
+
+
+             $(".msg_send_btn").attr('data-cidm', $c_id );
+
+
+
+                $(".mesgs").show();
+                $('.msg_history').animate({scrollTop: $('.msg_history').prop("scrollHeight")},550);
+
+
+                $(".msg_history").html('');
+              
+
+              $.get($data_url, function( data ) {
+
+               $(".msg_history").append('<div class="load-more-btn">Daha Fazla Yükle</div>');
+
+                data.forEach(function(item,i){
+                  var htm2="";
+                  if(item.user_id!=$user_id){
+                htm2='<div class="outgoing_msg"> <div class="sent_msg"><strong>'+item.username+'</strong><p>'+item.reply+'</p><span class="time_date"> 11:01 AM    |    June 9</span> </div></div>';
+                  }else{
+                    htm2='<div class="incoming_msg"><div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div><div class="received_msg"><div class="received_withd_msg"><strong>'+item.username+'</strong><p>'+item.reply+'</p><span class="time_date"> 11:01 AM    |    Today</span></div></div></div>'
+                  }
+               
+               $(".msg_history").append(htm2);
+
+
+                });
+               
+
+              });
+
+
+
+            });
+
+            $(".msg_send_btn").click(function(){
+
+            var $data_url = $(this).data("url");
+
+            var cid= $(".msg_send_btn").attr("data-cidm");
+            //data()=>eski değeri getiriyor 
+            // var cid2= $(".msg_send_btn").data("cidm");
+
+            var muser= $(".msg_send_btn").data('muser');
+            var message=$(".write_msg").val();
+              if(message!==""){
+
+                    $.ajax({
+                  type: 'POST',
+                  url: $data_url,
+                  data: {"user_id_fk":muser,"reply":message,"c_id_fk":cid},
+                  async: false,
+                  beforeSend: function (xhr) {
+                  if (xhr && xhr.overrideMimeType) {
+                   xhr.overrideMimeType('application/json;charset=utf-8');
+                      }
+                  },
+                 dataType: 'json',
+                success: function (data) {
+                  $(".write_msg").val("");
+                  var data={};
+		
+              data.message =message;
+              data.userId=muser;
+              data.mad=$mad;
+
+
+
+    $( ".chat_list" ).each(function( i ) {
+							   
+                 var term = $(this).attr('data');
+     
+     
+     
+                 if(term=="checked"){
+     
+                 var att= $(this).find(".chat_ib");
+
+                   data.to=att.find('h5').data("to");
+     
+                 }
+     
+                    });
+
+                  socket.emit('sendchat', data);
+
+            //  var htm2='<div class="outgoing_msg"> <div class="sent_msg"><strong><%= muser[0].username %></strong><p>'+message+'</p><span class="time_date"> 11:01 AM    |    June 9</span> </div></div>';
+
+              //  $(".msg_history").append(htm2);
+
+               // $('.msg_history').animate({scrollTop: $('.msg_history').prop("scrollHeight")},300);
+
+
+                
+
+}
+});
+
+                          }
+
+            
+
+            
+          
+
+               /* $.post($data_url,JSON.stringify(message), function(response) {
+
+                  
+
+        var htm2='<div class="outgoing_msg"> <div class="sent_msg"><p>'+data+'</p><span class="time_date"> 11:01 AM    |    June 9</span> </div></div>';
+
+             $(".msg_history").append(htm2);
+
+
+});*/
+
+             
+
+
+
+
+
+            })
+
+
+          })
+        
+        
+      
+        </script>
+        </body>
+		</html>

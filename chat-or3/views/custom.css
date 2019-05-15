@@ -1,0 +1,34 @@
+	
+#conteiner{
+    display: none;
+}
+
+.userlist{
+    padding: 10px;
+margin: 10px;
+width: 150px;
+height: 500px;
+background: #740C3F;
+
+}
+
+
+
+li{
+
+border:1px solid #fefe;
+background: #666666;
+height: 30px;
+text-align: center;
+line-height: 30px;
+list-style-type: none;
+
+}
+
+li:hover{
+
+background: #ffffff;
+color: #740C3F;
+cursor: pointer;
+}
+
