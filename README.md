@@ -5,7 +5,9 @@ mesajlaşma listesinde olan kişilerin hangilerinin online olduğunu görebilmek
 veritabanına kaydedilmektedir. Kişi ilk olarak sisteme kaydolması gerekmektedir.
 Sisteme kaydolduktan sonra giriş yaparak. Chat uygulamasına girebilmektedir.
 
-![alttext(https://2.bp.blogspot.com/ieSTAmemPco/W2NNJb7lpQI/AAAAAAAAAsE/MyIwDomWSUN2h2NgSJv5cuhzzHe1CUBACEwYBhgL/s320/Ads%25C4%25B1z.jpg)
+
+
+![alt text](https://2.bp.blogspot.com/-ieSTAmemPco/W2NNJb7lpQI/AAAAAAAAAsE/MyI_wDomWSUN2h2NgSJv5cuhzzHe1CUBACEwYBhgL/s320/Ads%25C4%25B1z.jpg)
 
 
 Giriş yaptıktan sonra eğer daha önce konuştuğu mesajlaştığı kişiler varsa mesajlar kısmında liste olarak 
@@ -13,7 +15,8 @@ gösterilmektedir.Kişi üste bulunan kişiler menusunden kişileri ekleyerek is
 Eğer kişi online ise yeşil olarak gözükmektedir.
 
 
-![alttext(https://4.bp.blogspot.com/RijQRRQbn9Q/W2NNJm3os7I/AAAAAAAAAsY/ItIcVlxmZ6gKck8O8R1do77P015lFk2_gCEwYBhgL/s320/Ads%25C4%25B1z3.jpg)
+![alt text](https://4.bp.blogspot.com/-RijQRRQbn9Q/W2NNJm3os7I/AAAAAAAAAsY/ItIcVlxmZ6gKck8O8R1do77P015lFk2_gCEwYBhgL/s320/Ads%25C4%25B1z3.jpg)
+
 
 
 Her dafasında son 20 mesaj listelenmektedir. 
